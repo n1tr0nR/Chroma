@@ -1,0 +1,8 @@
+{
+  "config.chroma.shader_enabled.title": "Enabled",
+  "config.chroma.shader_enabled.desc": "Control whether any mod using Chroma has Post Shaders enabled.",
+  "config.chroma.effects_explosion.title": "Advanced Explosions",
+  "config.chroma.effects_explosion.desc": "Control whether explosions should use Chroma effects..",
+  "config.chroma.effects_firework.title": "Advanced Fireworks",
+  "config.chroma.effects_firework.desc": "Control whether fireworks should use Chroma effects.."
+}

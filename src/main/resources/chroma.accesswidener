@@ -1,0 +1,4 @@
+accessWidener v2 named
+
+accessible field net/minecraft/client/gui/components/Checkbox onValueChange Lnet/minecraft/client/gui/components/Checkbox$OnValueChange;
+accessible class net/minecraft/client/multiplayer/ClientExplosionTracker$ExplosionInfo

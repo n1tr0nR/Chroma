@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "chroma",
+	"version": "${version}",
+	"name": "Chroma",
+	"description": "Rendering at its finest.",
+	"authors": [
+		"NitronRbn"
+	],
+	"license": "ARR",
+	"icon": "assets/chroma/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"dev.rbn.chroma.Chroma"
+		],
+		"client": [
+			"dev.rbn.chroma.client.ChromaClient"
+		],
+		"modmenu": [
+			"dev.rbn.chroma.config.ChromaModMenuInit"
+		]
+	},
+	"accessWidener": "chroma.accesswidener",
+	"mixins": [
+		"chroma.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
