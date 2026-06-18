@@ -35,11 +35,6 @@ public class ChromaClient implements ClientModInitializer {
         ChromaPipelines.register();
         ChromaRenderTypes.register();
 
-        ChromaPostManager.POST_EFFECTS.register(((manager, minecraft) -> {
-            ShaderPipeline pipeline = new ShaderPipeline(Identifier.withDefaultNamespace("spider"));
-            manager.applyEffect(pipeline);
-        }));
-
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (client.level instanceof ChromaWorld chromaWorld){
                 chromaWorld.chroma$clear();
