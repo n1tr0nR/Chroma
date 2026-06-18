@@ -5,6 +5,7 @@ import dev.rbn.chroma.client.particle.ChromaParticleRenderer;
 import dev.rbn.chroma.client.particle.ChromaWorld;
 import dev.rbn.chroma.client.screenshake.Screenshake;
 import dev.rbn.chroma.client.shader.ChromaPostManager;
+import dev.rbn.chroma.client.shader.ShaderPipeline;
 import dev.rbn.chroma.config.ChromaConfig;
 import dev.rbn.chroma.config.ConfigManager;
 import net.fabricmc.api.ClientModInitializer;
@@ -13,6 +14,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.EasingType;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.phys.Vec3;
@@ -33,24 +35,10 @@ public class ChromaClient implements ClientModInitializer {
         ChromaPipelines.register();
         ChromaRenderTypes.register();
 
-        UseItemCallback.EVENT.register((player, level, interactionHand) -> {
-            if (player.isShiftKeyDown()){
-                Screenshake.getInstance().screenshake(1, 10, EasingType.IN_OUT_SINE);
-            }
-            return InteractionResult.PASS;
-        });
-
-        ClientTickEvents.END_WORLD_TICK.register(clientLevel -> {
-            if (clientLevel instanceof ChromaWorld chromaWorld){
-                chromaWorld.chroma$addParticle(
-                        ChromaParticles.EXPLOSION,
-                        0, 100, 0,
-                        0,
-                        0,
-                        0
-                );
-            }
-        });
+        ChromaPostManager.POST_EFFECTS.register(((manager, minecraft) -> {
+            ShaderPipeline pipeline = new ShaderPipeline(Identifier.withDefaultNamespace("spider"));
+            manager.applyEffect(pipeline);
+        }));
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (client.level instanceof ChromaWorld chromaWorld){

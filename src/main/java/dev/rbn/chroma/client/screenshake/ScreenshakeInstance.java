@@ -30,12 +30,12 @@ public class ScreenshakeInstance {
         this.prevNowPower = this.nowPower;
 
         this.duration--;
-        float percent = (float) this.duration / this.maxDuration;
+        float percent = easingType.apply((float) this.duration / this.maxDuration);
         this.nowPower = this.power * percent;
     }
 
     public float getPower(float tickDelta){
-        return easingType.apply(Mth.lerp(tickDelta, this.prevNowPower, this.nowPower));
+        return Mth.lerp(tickDelta, this.prevNowPower, this.nowPower);
     }
 
     public boolean removeIf() {
