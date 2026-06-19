@@ -105,7 +105,7 @@ public class SimpleChromaParticle extends ChromaParticle{
     public static class Factory implements ChromaParticleFactory<SimpleChromaParticle> {
         @Override
         public SimpleChromaParticle create(ChromaParticleType<SimpleChromaParticle> type, Vec3 position, Vec3 velocity) {
-            return new SimpleChromaParticle(type, position, velocity, 400, 1F);
+            return new SimpleChromaParticle(type, position, velocity, 50, 1F);
         }
     }
 }

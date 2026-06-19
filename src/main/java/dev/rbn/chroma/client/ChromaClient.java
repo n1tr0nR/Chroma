@@ -3,27 +3,31 @@ package dev.rbn.chroma.client;
 import dev.rbn.chroma.Chroma;
 import dev.rbn.chroma.client.particle.ChromaParticleRenderer;
 import dev.rbn.chroma.client.particle.ChromaWorld;
+import dev.rbn.chroma.client.screen_particle.ScreenParticleManager;
+import dev.rbn.chroma.client.screen_particle.ScreenParticleRenderer;
 import dev.rbn.chroma.client.screenshake.Screenshake;
 import dev.rbn.chroma.client.shader.ChromaPostManager;
-import dev.rbn.chroma.client.shader.ShaderPipeline;
 import dev.rbn.chroma.config.ChromaConfig;
 import dev.rbn.chroma.config.ConfigManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.EasingType;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.phys.Vec3;
 
 public class ChromaClient implements ClientModInitializer {
     public ChromaParticleRenderer renderer;
+    public static ScreenParticleManager particle;
 
     @Override
     public void onInitializeClient() {
+        particle = new ScreenParticleManager();
+
         ConfigManager.load(ChromaConfig.getSections());
         ChromaPostManager post = new ChromaPostManager();
         post.initialize();
@@ -31,9 +35,23 @@ public class ChromaClient implements ClientModInitializer {
         screenshake.initialize();
         ClientTickEvents.END_CLIENT_TICK.register(screenshake::tick);
 
+        HudElementRegistryImpl.addLast(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "particle"), new ScreenParticleRenderer());
+
         ChromaParticles.register();
         ChromaPipelines.register();
         ChromaRenderTypes.register();
+
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()){
+            ClientTickEvents.END_WORLD_TICK.register(clientLevel -> {
+                if (clientLevel instanceof ChromaWorld chromaWorld){
+                    chromaWorld.chroma$addParticle(
+                            ChromaParticles.SPARK,
+                            0, 100, 0,
+                            0, 0, 0
+                    );
+                }
+            });
+        }
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (client.level instanceof ChromaWorld chromaWorld){

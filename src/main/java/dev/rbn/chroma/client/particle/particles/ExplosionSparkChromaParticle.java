@@ -1,12 +1,13 @@
 package dev.rbn.chroma.client.particle.particles;
 
+import dev.rbn.chroma.client.particle.BillboardingChromaParticle;
 import dev.rbn.chroma.client.particle.ChromaParticleFactory;
 import dev.rbn.chroma.client.particle.ChromaParticleType;
 import dev.rbn.chroma.client.particle.SimpleChromaParticle;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
-public class ExplosionSparkChromaParticle extends SimpleChromaParticle {
+public class ExplosionSparkChromaParticle extends BillboardingChromaParticle {
     public ExplosionSparkChromaParticle(ChromaParticleType<?> type, Vec3 position, Vec3 velocity) {
         super(type, position, velocity, 0, 0);
         RandomSource source = RandomSource.create();

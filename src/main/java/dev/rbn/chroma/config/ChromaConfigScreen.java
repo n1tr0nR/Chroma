@@ -36,7 +36,7 @@ public class ChromaConfigScreen extends Screen implements RenderUtil {
         this.shader = new ChromaButton(0, 0, Component.literal("Shader Pipeline"), Component.literal("Configure visual shader effects."), button -> this.minecraft.setScreen(new ShaderSectionScreen(this)));
         this.addRenderableWidget(this.shader);
 
-        this.screenshake = new ChromaButton(0, 0, Component.literal("Screenshake"), Component.literal("Configure camera shake effects."), button -> {});
+        this.screenshake = new ChromaButton(0, 0, Component.literal("Screenshake"), Component.literal("Configure camera shake effects."), button -> this.minecraft.setScreen(new ScreenshakeSectionScreen(this)));
         this.addRenderableWidget(this.screenshake);
 
         this.effects = new ChromaButton(0, 0, Component.literal("Effects"), Component.literal("Adjust Chroma's built in effects."), button -> this.minecraft.setScreen(new EffectsSectionScreen(this)));

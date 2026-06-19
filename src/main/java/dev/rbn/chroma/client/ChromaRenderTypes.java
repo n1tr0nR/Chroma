@@ -25,6 +25,21 @@ public class ChromaRenderTypes {
 
         return RenderType.create("entity_additive", setup);
     });
+    private static final BiFunction<Identifier, Boolean, RenderType> ENTITY_MULTIPLY = Util.memoize((texture, outline) -> {
+        RenderSetup setup = RenderSetup.builder(ChromaPipelines.ENTITY_MULTIPLY)
+                .withTexture("Sampler0", texture)
+                .useLightmap()
+                .useOverlay()
+                .affectsCrumbling()
+                .setOutline(
+                        outline
+                                ? RenderSetup.OutlineProperty.AFFECTS_OUTLINE
+                                : RenderSetup.OutlineProperty.NONE
+                )
+                .createRenderSetup();
+
+        return RenderType.create("entity_multiply", setup);
+    });
 
     public static RenderType entityAdditiveNoCull(Identifier identifier, boolean bl) {
         return ENTITY_ADDITIVE.apply(identifier, bl);
@@ -32,5 +47,13 @@ public class ChromaRenderTypes {
 
     public static RenderType entityAdditiveNoCull(Identifier identifier) {
         return entityAdditiveNoCull(identifier, true);
+    }
+
+    public static RenderType entityMultiplyNoCull(Identifier identifier, boolean bl) {
+        return ENTITY_MULTIPLY.apply(identifier, bl);
+    }
+
+    public static RenderType entityMultiplyNoCull(Identifier identifier) {
+        return entityMultiplyNoCull(identifier, true);
     }
 }

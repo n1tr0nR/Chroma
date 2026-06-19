@@ -1,8 +1,16 @@
 {
   "config.chroma.shader_enabled.title": "Enabled",
   "config.chroma.shader_enabled.desc": "Control whether any mod using Chroma has Post Shaders enabled.",
+
   "config.chroma.effects_explosion.title": "Advanced Explosions",
-  "config.chroma.effects_explosion.desc": "Control whether explosions should use Chroma effects..",
+  "config.chroma.effects_explosion.desc": "Control whether explosions should use Chroma effects.",
   "config.chroma.effects_firework.title": "Advanced Fireworks",
-  "config.chroma.effects_firework.desc": "Control whether fireworks should use Chroma effects.."
+  "config.chroma.effects_firework.desc": "Control whether fireworks should use Chroma effects.",
+  "config.chroma.effects_max_particles.title": "Max Particles",
+  "config.chroma.effects_max_particles.desc": "Control how many Chroma Particles can be on screen.",
+  "config.chroma.effects_max_distance.title": "Max Distance",
+  "config.chroma.effects_max_distance.desc": "Control how far Chroma Particles should render.",
+
+  "config.chroma.screenshake_enabled.title": "Enabled",
+  "config.chroma.screenshake_enabled.desc": "Control whether any mod using Chroma has Screenshake enabled."
 }

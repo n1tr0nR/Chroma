@@ -34,6 +34,21 @@ public class ExplosionEffect {
                     );
                 }
             }
+            for (int i = 0; i < amount / 2; i++){
+                Vec3 size = new Vec3(
+                        ((clientLevel.random.nextFloat() - 0.5F) * 2) * (offset * 0.25F),
+                        ((clientLevel.random.nextFloat() - 0.5F) * 2) * (offset * 0.25F),
+                        ((clientLevel.random.nextFloat() - 0.5F) * 2) * (offset * 0.25F)
+                );
+
+                chromaWorld.chroma$addParticle(
+                        ChromaParticles.SMOKE,
+                        position.x + size.x,
+                        position.y + size.y,
+                        position.z + size.z,
+                        (clientLevel.random.nextFloat() - 0.5F) * 0.1F, 0.05F, (clientLevel.random.nextFloat() - 0.5F) * 0.1F
+                );
+            }
         }
     }
 }
