@@ -1,7 +1,6 @@
 package dev.rbn.chroma.client.particle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.rbn.chroma.client.ChromaRenderTypes;
 import dev.rbn.chroma.config.ChromaConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.SubmitNodeCollector;

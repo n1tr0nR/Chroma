@@ -3,7 +3,6 @@ package dev.rbn.chroma.config.widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.Mth;
 
 public interface RenderUtil {
     default int withAlpha(int color, int alpha) {

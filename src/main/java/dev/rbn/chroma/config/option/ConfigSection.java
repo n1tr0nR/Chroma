@@ -1,6 +1,5 @@
 package dev.rbn.chroma.config.option;
 
-import dev.rbn.chroma.config.option.values.BooleanValue;
 import dev.rbn.chroma.config.option.values.ConfigValue;
 
 import java.util.ArrayList;

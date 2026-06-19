@@ -1,6 +1,5 @@
 package dev.rbn.chroma.client.shader;
 
-import dev.rbn.chroma.client.shader.uniform.ChromaConfigPatch;
 import dev.rbn.chroma.client.shader.uniform.ChromaUniforms;
 import net.minecraft.resources.Identifier;
 

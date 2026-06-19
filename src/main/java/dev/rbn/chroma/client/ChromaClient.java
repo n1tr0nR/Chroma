@@ -4,7 +4,6 @@ import dev.rbn.chroma.Chroma;
 import dev.rbn.chroma.client.particle.ChromaParticleRenderer;
 import dev.rbn.chroma.client.particle.ChromaWorld;
 import dev.rbn.chroma.client.screen_particle.ScreenParticleManager;
-import dev.rbn.chroma.client.screen_particle.ScreenParticleRenderer;
 import dev.rbn.chroma.client.screenshake.Screenshake;
 import dev.rbn.chroma.client.shader.ChromaPostManager;
 import dev.rbn.chroma.config.ChromaConfig;
@@ -13,11 +12,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
-import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 
 public class ChromaClient implements ClientModInitializer {

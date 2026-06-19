@@ -3,7 +3,6 @@ package dev.rbn.chroma.client.particle.particles;
 import dev.rbn.chroma.client.particle.BillboardingChromaParticle;
 import dev.rbn.chroma.client.particle.ChromaParticleFactory;
 import dev.rbn.chroma.client.particle.ChromaParticleType;
-import dev.rbn.chroma.client.particle.SimpleChromaParticle;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
