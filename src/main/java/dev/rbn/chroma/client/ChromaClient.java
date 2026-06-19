@@ -35,7 +35,7 @@ public class ChromaClient implements ClientModInitializer {
         screenshake.initialize();
         ClientTickEvents.END_CLIENT_TICK.register(screenshake::tick);
 
-        HudElementRegistryImpl.addLast(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "particle"), new ScreenParticleRenderer());
+        //HudElementRegistryImpl.addLast(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "particle"), new ScreenParticleRenderer());
 
         ChromaParticles.register();
         ChromaPipelines.register();
