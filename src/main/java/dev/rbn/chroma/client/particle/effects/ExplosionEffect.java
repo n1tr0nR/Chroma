@@ -17,14 +17,15 @@ public class ExplosionEffect {
                         ((clientLevel.random.nextFloat() - 0.5F) * 2) * (offset * 0.25F)
                 );
 
+                chromaWorld.chroma$addParticle(
+                        ChromaParticles.EXPLOSION,
+                        position.x + size.x,
+                        position.y + size.y,
+                        position.z + size.z,
+                        0, 0, 0
+                );
                 if (clientLevel.random.nextInt(3) <= 0){
-                    chromaWorld.chroma$addParticle(
-                            ChromaParticles.EXPLOSION,
-                            position.x + size.x,
-                            position.y + size.y,
-                            position.z + size.z,
-                            0, 0, 0
-                    );
+
                     chromaWorld.chroma$addParticle(
                             ChromaParticles.EXPLOSION_SPARK,
                             position.x + size.x,

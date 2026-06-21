@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.world.phys.Vec3;
 
 public class ChromaParticleRenderer {
-    private final ChromaWorld chromaWorld;
+    public final ChromaWorld chromaWorld;
 
     public ChromaParticleRenderer(ChromaWorld chromaWorld) {
         this.chromaWorld = chromaWorld;

@@ -41,7 +41,17 @@ public class ChromaClient implements ClientModInitializer {
             ClientTickEvents.END_WORLD_TICK.register(clientLevel -> {
                 if (clientLevel instanceof ChromaWorld chromaWorld){
                     chromaWorld.chroma$addParticle(
-                            ChromaParticles.SPARK,
+                            ChromaParticles.EXPLOSION,
+                            0, 100, 0,
+                            0, 0, 0
+                    );
+                    chromaWorld.chroma$addParticle(
+                            ChromaParticles.EXPLOSION,
+                            0, 100, 0,
+                            0, 0, 0
+                    );
+                    chromaWorld.chroma$addParticle(
+                            ChromaParticles.EXPLOSION,
                             0, 100, 0,
                             0, 0, 0
                     );
@@ -64,6 +74,10 @@ public class ChromaClient implements ClientModInitializer {
 
             if (minecraft.level != null){
                 if (renderer == null && minecraft.level instanceof ChromaWorld chromaWorld){
+                    Chroma.LOGGER.info("Initializing Chroma Particle Renderer");
+                    renderer = new ChromaParticleRenderer(chromaWorld);
+                }
+                if (minecraft.level instanceof ChromaWorld chromaWorld && renderer.chromaWorld != chromaWorld){
                     Chroma.LOGGER.info("Initializing Chroma Particle Renderer");
                     renderer = new ChromaParticleRenderer(chromaWorld);
                 }
