@@ -2,7 +2,9 @@ package dev.rbn.chroma.client.shader;
 
 import dev.rbn.chroma.client.shader.uniform.ChromaUniforms;
 import net.minecraft.resources.Identifier;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Experimental
 public class ShaderPipeline {
     private final Identifier effectId;
     private final ChromaUniforms uniforms = new ChromaUniforms();

@@ -1,0 +1,6 @@
+classTweaker  v1  named
+
+transitive-accessible field net/minecraft/client/gui/components/Checkbox onValueChange Lnet/minecraft/client/gui/components/Checkbox$OnValueChange;
+transitive-accessible class net/minecraft/client/multiplayer/ClientExplosionTracker$ExplosionInfo
+
+transitive-inject-interface  net/minecraft/client/multiplayer/ClientLevel  dev/rbn/chroma/client/particle/ChromaWorld

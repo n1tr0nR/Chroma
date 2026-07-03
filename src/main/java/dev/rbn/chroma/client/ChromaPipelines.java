@@ -9,8 +9,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 public class ChromaPipelines {
     public static void register(){}
 
-    public static final BlendFunction MULTIPLY = new BlendFunction(SourceFactor.DST_COLOR, DestFactor.ONE_MINUS_SRC_ALPHA);
-
     public static final RenderPipeline ENTITY_ADDITIVE =
             RenderPipelines.register(
                     RenderPipeline.builder(RenderPipelines.ENTITY_SNIPPET)

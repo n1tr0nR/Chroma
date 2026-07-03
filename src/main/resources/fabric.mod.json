@@ -21,7 +21,7 @@
 			"dev.rbn.chroma.config.ChromaModMenuInit"
 		]
 	},
-	"accessWidener": "chroma.accesswidener",
+	"accessWidener": "chroma.classtweaker",
 	"mixins": [
 		"chroma.mixins.json"
 	],

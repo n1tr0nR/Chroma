@@ -3,13 +3,14 @@ package dev.rbn.chroma.client.particle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.rbn.chroma.config.ChromaConfig;
 import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.world.phys.Vec3;
 
 public class ChromaParticleRenderer {
-    public final ChromaWorld chromaWorld;
+    public final ClientLevel chromaWorld;
 
-    public ChromaParticleRenderer(ChromaWorld chromaWorld) {
+    public ChromaParticleRenderer(ClientLevel chromaWorld) {
         this.chromaWorld = chromaWorld;
     }
 

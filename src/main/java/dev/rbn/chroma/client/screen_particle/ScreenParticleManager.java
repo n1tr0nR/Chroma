@@ -2,10 +2,12 @@ package dev.rbn.chroma.client.screen_particle;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.particles.ParticleType;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiStatus.Experimental
 public class ScreenParticleManager {
     private final List<ScreenspaceParticle> particles = new ArrayList<>();
 

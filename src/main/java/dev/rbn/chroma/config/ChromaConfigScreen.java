@@ -116,6 +116,9 @@ public class ChromaConfigScreen extends Screen implements RenderUtil {
 
         Component data = drawSmartText(this.minecraft, startX - this.minecraft.font.width(Component.literal("Chroma: 1.0v | NitronRbn.")) / 2, startY + 65, Component.literal("Chroma: 1.0v | NitronRbn."), 0x808080, 0x999999, mouseX, mouseY);
         guiGraphics.drawString(minecraft.font, data, startX - this.minecraft.font.width(data) / 2, startY + 65, desc3, true);
+
+        Component info = drawSmartText(this.minecraft, startX - this.minecraft.font.width(Component.literal("More features are planned! :3")) / 2, startY + 65, Component.literal("More features are planned! :3"), 0x404040, 0x606060, mouseX, mouseY);
+        guiGraphics.drawString(minecraft.font, info, startX - this.minecraft.font.width(info) / 2, startY + 54, desc3, true);
     }
 
     public float getPercentFromRange(float start, float end) {

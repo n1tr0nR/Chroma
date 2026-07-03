@@ -1,10 +1,12 @@
 package dev.rbn.chroma.client.shader.uniform;
 
 import net.minecraft.client.renderer.UniformValue;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@ApiStatus.Experimental
 public class ChromaConfigPatch {
     private final String name;
 

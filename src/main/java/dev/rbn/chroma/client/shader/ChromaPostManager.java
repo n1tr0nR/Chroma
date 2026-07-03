@@ -9,12 +9,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelTargetBundle;
 import net.minecraft.client.renderer.PostChain;
+import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiStatus.Experimental
 public class ChromaPostManager {
     private static final Logger LOGGER = LoggerFactory.getLogger("Chroma/Post");
     private static final Minecraft minecraft = Minecraft.getInstance();

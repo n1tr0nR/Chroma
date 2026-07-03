@@ -10,10 +10,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.io.InputStreamReader;
 import java.util.Optional;
 
+@ApiStatus.Experimental
 public class ScreenspaceParticle {
     private final ParticleType<?> particle;
     private int x;

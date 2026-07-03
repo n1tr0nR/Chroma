@@ -23,7 +23,7 @@ dependencies {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/chroma.accesswidener")
+	accessWidenerPath = file("src/main/resources/chroma.classtweaker")
 }
 
 processResources {

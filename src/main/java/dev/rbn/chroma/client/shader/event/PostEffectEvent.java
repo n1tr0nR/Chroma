@@ -1,8 +1,11 @@
 package dev.rbn.chroma.client.shader.event;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiStatus.Experimental
 public class PostEffectEvent {
     private final List<PostEffectCallback> listeners =
             new ArrayList<>();
