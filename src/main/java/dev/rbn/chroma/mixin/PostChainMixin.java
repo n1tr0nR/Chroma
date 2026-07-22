@@ -1,6 +1,6 @@
 package dev.rbn.chroma.mixin;
 
-import dev.rbn.chroma.client.ChromaClient;
+import dev.rbn.chroma.client.Chroma;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.UniformValue;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +27,7 @@ public class PostChainMixin {
                     UniformValue v = newList.get(i);
 
                     if (i == 1 && v instanceof UniformValue.FloatUniform) {
-                        newList.set(i, new UniformValue.FloatUniform(ChromaClient.test()));
+                        newList.set(i, new UniformValue.FloatUniform(Chroma.test()));
                     }
                 }
             }

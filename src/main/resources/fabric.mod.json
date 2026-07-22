@@ -11,14 +11,16 @@
 	"icon": "assets/chroma/icon.png",
 	"environment": "client",
 	"entrypoints": {
-		"main": [
-			"dev.rbn.chroma.Chroma"
-		],
 		"client": [
-			"dev.rbn.chroma.client.ChromaClient"
+			"dev.rbn.chroma.client.Chroma"
 		],
 		"modmenu": [
 			"dev.rbn.chroma.config.ChromaModMenuInit"
+		],
+		"chroma-submod": [
+			"dev.rbn.chroma.submods.plasma.Plasma",
+			"dev.rbn.chroma.submods.canvas.Canvas",
+			"dev.rbn.chroma.submods.puppet.Puppet"
 		]
 	},
 	"accessWidener": "chroma.classtweaker",

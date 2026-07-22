@@ -2,7 +2,7 @@ package dev.rbn.chroma.client.screen_particle;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dev.rbn.chroma.Chroma;
+import dev.rbn.chroma.client.Chroma;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.particles.ParticleType;

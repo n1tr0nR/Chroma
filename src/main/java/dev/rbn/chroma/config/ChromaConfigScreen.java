@@ -1,6 +1,6 @@
 package dev.rbn.chroma.config;
 
-import dev.rbn.chroma.Chroma;
+import dev.rbn.chroma.client.Chroma;
 import dev.rbn.chroma.config.widget.ChromaButton;
 import dev.rbn.chroma.config.widget.RenderUtil;
 import net.minecraft.client.gui.GuiGraphics;

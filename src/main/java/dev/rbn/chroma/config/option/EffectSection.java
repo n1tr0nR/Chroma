@@ -1,6 +1,6 @@
 package dev.rbn.chroma.config.option;
 
-import dev.rbn.chroma.Chroma;
+import dev.rbn.chroma.client.Chroma;
 import dev.rbn.chroma.config.option.values.BooleanValue;
 import dev.rbn.chroma.config.option.values.IntegerValue;
 import net.minecraft.resources.Identifier;

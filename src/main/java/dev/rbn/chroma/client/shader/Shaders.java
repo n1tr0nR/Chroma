@@ -1,6 +1,6 @@
 package dev.rbn.chroma.client.shader;
 
-import dev.rbn.chroma.Chroma;
+import dev.rbn.chroma.client.Chroma;
 import net.minecraft.resources.Identifier;
 
 public class Shaders {

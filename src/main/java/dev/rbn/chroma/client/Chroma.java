@@ -1,7 +1,6 @@
 package dev.rbn.chroma.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.rbn.chroma.Chroma;
 import dev.rbn.chroma.client.lens_flare.*;
 import dev.rbn.chroma.client.particle.ChromaParticleRenderer;
 import dev.rbn.chroma.client.screen_particle.ScreenParticleManager;
@@ -9,6 +8,7 @@ import dev.rbn.chroma.client.screenshake.Screenshake;
 import dev.rbn.chroma.client.shader.ChromaPostManager;
 import dev.rbn.chroma.config.ChromaConfig;
 import dev.rbn.chroma.config.ConfigManager;
+import dev.rbn.chroma.submods.Submod;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -18,16 +18,24 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix4f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class ChromaClient implements ClientModInitializer {
+public class Chroma implements ClientModInitializer {
     public ChromaParticleRenderer renderer;
     public static ScreenParticleManager particle;
 
+    public static final String MOD_ID = "chroma";
+    public static final Logger LOGGER = LoggerFactory.getLogger("Chroma");
+
     @Override
     public void onInitializeClient() {
+        FabricLoader.getInstance()
+                .getEntrypoints("chroma-submod", Submod.class)
+                .forEach(Submod::onInitialize);
+
         particle = new ScreenParticleManager();
 
         ConfigManager.load(ChromaConfig.getSections());
@@ -42,30 +50,11 @@ public class ChromaClient implements ClientModInitializer {
             LFHelper.WorldRenderState.PROJECTION = Minecraft.getInstance().gameRenderer.getProjectionMatrix(0);
         });
 
-        //TODO: Fix this, make it work again
-        //HudElementRegistryImpl.addLast(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "particle"), new ScreenParticleRenderer());
-
         ChromaParticles.register();
         ChromaPipelines.register();
         ChromaRenderTypes.register();
 
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()){
-            ClientTickEvents.END_WORLD_TICK.register(clientLevel -> {
-                LensFlareEvent.register(ctx -> {
-                    ctx.addFlare(new LensFlare(new Vec3(0, 100, 0), 1.0F, 1.0F, 10F,
-                            List.of(
-                                    new LensFlare.Flare(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "textures/flare/orb.png"), -0.8F, 200, 1F),
-                                    new LensFlare.Flare(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "textures/flare/shine.png"), 1, 100, 0.25F),
-                                    new LensFlare.Flare(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "textures/flare/orb.png"), 0.8F, 200, 1F),
-                                    new LensFlare.Flare(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "textures/flare/orb.png"), -3F, 100, 0.25F),
-                                    new LensFlare.Flare(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "textures/flare/orb.png"), 3F, 100, 0.25F)
-                            )
-                    ));
-                });
-            });
-        }
-
-        HudElementRegistryImpl.addLast(Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "lens_flare"), new LensFlareHudRenderer());
+        HudElementRegistryImpl.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "lens_flare"), new LensFlareHudRenderer());
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (client.level != null){
@@ -85,7 +74,7 @@ public class ChromaClient implements ClientModInitializer {
                     renderer = new ChromaParticleRenderer(null);
                 }
                 if (renderer.chromaWorld != minecraft.level){
-                    Chroma.LOGGER.info("Initializing Chroma Particle Renderer");
+                    LOGGER.info("Initializing Chroma Particle Renderer");
                     renderer = new ChromaParticleRenderer(minecraft.level);
                 }
                 renderer.render(worldRenderContext.matrices(), worldRenderContext.commandQueue(), minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false), minecraft.gameRenderer.getMainCamera());
