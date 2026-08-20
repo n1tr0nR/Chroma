@@ -28,7 +28,8 @@
 	"mixins": [
 		"chroma.mixins.json",
 		"chroma.plasma.mixins.json",
-		"chroma.canvas.mixins.json"
+		"chroma.canvas.mixins.json",
+		"chroma.flare.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.3",
