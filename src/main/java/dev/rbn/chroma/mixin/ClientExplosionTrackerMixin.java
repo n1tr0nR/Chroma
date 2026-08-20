@@ -4,8 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.rbn.chroma.client.particle.effects.ExplosionEffect;
-import dev.rbn.chroma.client.screenshake.Screenshake;
-import dev.rbn.chroma.config.ChromaConfig;
+import dev.rbn.chroma.submods.flare.screenshake.Screenshake;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.particles.ParticleOptions;
@@ -25,7 +24,7 @@ public abstract class ClientExplosionTrackerMixin {
     @WrapOperation(method = "handleExplosion", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     public void chroma$bigBoom(ClientLevel instance, ParticleOptions particleOptions, double x, double y, double z, double vx, double vy, double vz, Operation<Void> original,
                                @Local(argsOnly = true)ClientboundExplodePacket packet){
-        if (ChromaConfig.EFFECTS.EXPLOSION.get() && particleOptions.equals(ParticleTypes.EXPLOSION_EMITTER)){
+        if (particleOptions.equals(ParticleTypes.EXPLOSION_EMITTER)){
             ExplosionEffect.explode(new Vec3(x, y, z), this.getLevel(), packet.radius());
             Screenshake.getInstance().screenshakeAroundPoint(instance, (int) (5 * packet.radius()), packet.radius(), 5 * packet.radius(), new Vec3(x, y, z), EasingType.LINEAR);
         } else {

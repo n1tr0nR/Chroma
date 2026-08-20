@@ -3,7 +3,6 @@ package dev.rbn.chroma.mixin;
 import dev.rbn.chroma.client.particle.ChromaParticle;
 import dev.rbn.chroma.client.particle.ChromaParticleType;
 import dev.rbn.chroma.client.particle.ChromaWorld;
-import dev.rbn.chroma.config.ChromaConfig;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -43,7 +42,7 @@ public abstract class ClientLevelMixin extends Level implements ChromaWorld {
 
     @Override
     public void chroma$addParticle(ChromaParticleType<?> type, double x, double y, double z, double xv, double yv, double zv) {
-        if (this.particles.size() + 1 > ChromaConfig.EFFECTS.MAX_PARTICLES.get()) return;
+        if (this.particles.size() + 1 > 512) return;
         this.particles.add(type.create(new Vec3(x, y, z), new Vec3(xv, yv, zv)));
     }
 

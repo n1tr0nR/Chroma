@@ -10,7 +10,7 @@ import java.util.function.BiFunction;
 public class ChromaRenderTypes {
     public static void register(){}
 
-    private static final BiFunction<Identifier, Boolean, RenderType> ENTITY_ADDITIVE = Util.memoize((texture, outline) -> {
+    public static final BiFunction<Identifier, Boolean, RenderType> ENTITY_ADDITIVE = Util.memoize((texture, outline) -> {
         RenderSetup setup = RenderSetup.builder(ChromaPipelines.ENTITY_ADDITIVE)
                 .withTexture("Sampler0", texture)
                 .useLightmap()
@@ -25,7 +25,7 @@ public class ChromaRenderTypes {
 
         return RenderType.create("entity_additive", setup);
     });
-    private static final BiFunction<Identifier, Boolean, RenderType> ENTITY_MULTIPLY = Util.memoize((texture, outline) -> {
+    public static final BiFunction<Identifier, Boolean, RenderType> ENTITY_MULTIPLY = Util.memoize((texture, outline) -> {
         RenderSetup setup = RenderSetup.builder(ChromaPipelines.ENTITY_MULTIPLY)
                 .withTexture("Sampler0", texture)
                 .useLightmap()

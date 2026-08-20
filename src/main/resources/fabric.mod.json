@@ -7,7 +7,7 @@
 	"authors": [
 		"NitronRbn"
 	],
-	"license": "ARR",
+	"license": "LGPLv3",
 	"icon": "assets/chroma/icon.png",
 	"environment": "client",
 	"entrypoints": {
@@ -20,12 +20,15 @@
 		"chroma-submod": [
 			"dev.rbn.chroma.submods.plasma.Plasma",
 			"dev.rbn.chroma.submods.canvas.Canvas",
-			"dev.rbn.chroma.submods.puppet.Puppet"
+			"dev.rbn.chroma.submods.puppet.Puppet",
+			"dev.rbn.chroma.submods.flare.Flare"
 		]
 	},
 	"accessWidener": "chroma.classtweaker",
 	"mixins": [
-		"chroma.mixins.json"
+		"chroma.mixins.json",
+		"chroma.plasma.mixins.json",
+		"chroma.canvas.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.3",

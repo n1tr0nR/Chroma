@@ -1,8 +1,13 @@
 package dev.rbn.chroma.config.widget;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.render.TextureSetup;
+import net.minecraft.client.gui.render.state.ColoredRectangleRenderState;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.joml.Matrix3x2f;
 
 public interface RenderUtil {
     default int withAlpha(int color, int alpha) {
@@ -57,5 +62,22 @@ public interface RenderUtil {
         }
 
         return result;
+    }
+
+    default void horizontalGradient(int x1, int y1, int x2, int y2, int leftColor, int rightColor, GuiGraphics guiGraphics) {
+        guiGraphics.guiRenderState.submitGuiElement(
+                new ColoredRectangleRenderState(
+                        RenderPipelines.GUI,
+                        TextureSetup.noTexture(),
+                        new Matrix3x2f(guiGraphics.pose()),
+                        x1,
+                        y1,
+                        x2,
+                        y2,
+                        leftColor,
+                        rightColor,
+                        guiGraphics.scissorStack.peek()
+                )
+        );
     }
 }

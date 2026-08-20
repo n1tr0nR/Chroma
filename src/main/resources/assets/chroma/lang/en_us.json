@@ -12,5 +12,19 @@
   "config.chroma.effects_max_distance.desc": "Control how far Chroma Particles should render.",
 
   "config.chroma.screenshake_enabled.title": "Enabled",
-  "config.chroma.screenshake_enabled.desc": "Control whether any mod using Chroma has Screenshake enabled."
+  "config.chroma.screenshake_enabled.desc": "Control whether any mod using Chroma has Screenshake enabled.",
+
+  "value.chroma.canvas": "Canvas",
+  "value.chroma.canvas.desc": "Config for Chroma's post effects engine.",
+  "value.chroma.plasma": "Plasma",
+  "value.chroma.plasma.desc": "Config for Chroma's advanced particle engine.",
+  "value.chroma.puppet": "Puppet",
+  "value.chroma.puppet.desc": "Config for Chroma's entity animation engine.",
+  "value.chroma.flare": "Flare",
+  "value.chroma.flare.desc": "Config for Chroma's camera effects engine.",
+
+  "config.chroma.enabled": "Enabled",
+  "config.chroma.max_particles": "Max Particles",
+  "config.chroma.max_distance": "Max Distance",
+  "config.chroma.fade_out": "Fade out"
 }

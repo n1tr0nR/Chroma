@@ -1,4 +1,4 @@
-package dev.rbn.chroma.client.screenshake;
+package dev.rbn.chroma.submods.flare.screenshake;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.EasingType;

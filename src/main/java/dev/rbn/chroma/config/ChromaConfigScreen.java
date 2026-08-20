@@ -1,140 +1,372 @@
 package dev.rbn.chroma.config;
 
 import dev.rbn.chroma.client.Chroma;
+import dev.rbn.chroma.config.option.ConfigSection;
+import dev.rbn.chroma.config.section.ConfigSectionScreen;
 import dev.rbn.chroma.config.widget.ChromaButton;
+import dev.rbn.chroma.config.widget.ChromaImageButton;
 import dev.rbn.chroma.config.widget.RenderUtil;
+import dev.rbn.chroma.submods.canvas.Target;
+import dev.rbn.chroma.submods.canvas.emitter.BurstEmitter;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
-import org.jspecify.annotations.NonNull;
+import net.minecraft.util.RandomSource;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ChromaConfigScreen extends Screen implements RenderUtil {
     private final Screen prevScreen;
+    public final String modId;
+    private final Config config;
 
-    private ChromaButton exit;
-    private ChromaButton shader;
-    private ChromaButton screenshake;
-    private ChromaButton effects;
+    private final BurstEmitter emitter = new BurstEmitter(Target.ALL);
+
+    private final List<ChromaButton> buttons = new ArrayList<>();
+
+    private ChromaImageButton cancel;
+    private ChromaImageButton confirm;
 
     private int ticksOpen = 0;
 
-    protected ChromaConfigScreen(Screen prevScreen) {
+    private int scrollOffset = 0;
+    private int contentHeight = 0;
+
+    private static final int LIST_TOP = 51;
+    private static final int BUTTON_SPACING = 10;
+    private static final int LIST_BOTTOM_PADDING = 0;
+
+    protected ChromaConfigScreen(Screen prevScreen, String modId) {
         super(Component.empty());
+
         this.prevScreen = prevScreen;
+        this.modId = modId;
+        this.config = GlobalConfigHandler.instance.getConfigForId(modId);
+
+        if (this.config != null) {
+            this.config.load();
+        } else {
+            this.onClose();
+        }
     }
 
     @Override
     protected void init() {
         super.init();
 
-        this.exit = new ChromaButton(0, 0, Component.literal("Exit"), null, button -> onClose());
-        this.addRenderableWidget(this.exit);
+        if (config == null) {
+            onClose();
+            return;
+        }
 
-        this.shader = new ChromaButton(0, 0, Component.literal("Shader Pipeline"), Component.literal("Configure visual shader effects."), button -> this.minecraft.setScreen(new ShaderSectionScreen(this)));
-        this.addRenderableWidget(this.shader);
+        buttons.clear();
 
-        this.screenshake = new ChromaButton(0, 0, Component.literal("Screenshake"), Component.literal("Configure camera shake effects."), button -> this.minecraft.setScreen(new ScreenshakeSectionScreen(this)));
-        this.addRenderableWidget(this.screenshake);
+        int y = LIST_TOP + 10;
 
-        this.effects = new ChromaButton(0, 0, Component.literal("Effects"), Component.literal("Adjust Chroma's built in effects."), button -> this.minecraft.setScreen(new EffectsSectionScreen(this)));
-        this.addRenderableWidget(this.effects);
-    }
+        for (ConfigSection section : config.sections) {
+            ChromaButton button = new ChromaButton(
+                    width,
+                    y,
+                    Component.translatable(section.getTranslated()),
+                    Component.translatable(section.getTranslated() + ".desc"),
+                    b -> { minecraft.setScreen(new ConfigSectionScreen(this, section, this.emitter)); },
+                    section.color
+            );
 
-    @Override
-    public void render(@NonNull GuiGraphics guiGraphics, int i, int j, float f) {
-        super.render(guiGraphics, i, j, f);
+            buttons.add(button);
+            addRenderableWidget(button);
 
-        if (this.exit != null) this.exit.updatePosition(10, 10, this.ticksOpen);
+            y += button.getHeight() + BUTTON_SPACING;
+        }
 
-        if (this.shader != null) this.shader.updatePosition(guiGraphics.guiWidth() / 2 - (this.shader.getWidth() / 2), guiGraphics.guiHeight() - 150, this.ticksOpen);
+        contentHeight = y - LIST_TOP;
 
-        if (this.screenshake != null) this.screenshake.updatePosition(guiGraphics.guiWidth() / 2 - (this.screenshake.getWidth() / 2), guiGraphics.guiHeight() - 110, this.ticksOpen);
+        scrollOffset = 0;
 
-        if (this.effects != null) this.effects.updatePosition(guiGraphics.guiWidth() / 2 - (this.effects.getWidth() / 2), guiGraphics.guiHeight() - 70, this.ticksOpen);
-    }
-
-    @Override
-    public void renderBackground(@NonNull GuiGraphics guiGraphics, int mouseX, int mouseY, float f) {
-        super.renderBackground(guiGraphics, mouseX, mouseY, f);
-        renderTop(guiGraphics, mouseX, mouseY);
-    }
-
-    public void renderTop(GuiGraphics guiGraphics, int mouseX, int mouseY){
-        guiGraphics.fillGradient(0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight(), 0x80000000, 0x00000000);
-
-        guiGraphics.fillGradient(0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight(), 0x00000000, 0x80000000);
-
-        int startX = guiGraphics.guiWidth() / 2;
-        int startY = 10;
-
-        int width = 200;
-        int height = 80;
-
-        int background = withAlpha(0x00000000, (int) (getPercentFromRange(0, 10) * 150));
-        int border = withAlpha(0x80FFFFFF, (int) (getPercentFromRange(5, 25) * 150));
-
-        guiGraphics.fill(startX - width / 2, startY, startX + width / 2, startY + height, background);
-
-        guiGraphics.fill(startX - width / 2 + 1, startY - 1, startX + width / 2 - 1, startY, background);
-        guiGraphics.fill(startX - width / 2 + 1, startY + height, startX + width / 2 - 1, startY + height + 1, background);
-
-        guiGraphics.fill(startX - width / 2 + 1, startY, startX - width / 2 + 2, startY + height, border);
-        guiGraphics.fill(startX + width / 2 - 2, startY, startX + width / 2 - 1, startY + height, border);
-        guiGraphics.fill(startX - width / 2 + 2, startY, startX + width / 2 - 2, startY + 1, border);
-        guiGraphics.fill(startX - width / 2 + 2, startY + height - 1, startX + width / 2 - 2, startY + height, border);
-
-        Identifier texture = Identifier.fromNamespaceAndPath(Chroma.MOD_ID, "icon.png");
-
-        int chroma = withAlpha(0xFFFFFFFF, (int) (getPercentFromRange(25, 35) * 255));
-
-        guiGraphics.blit(
-                RenderPipelines.GUI_TEXTURED,
-                texture,
-                startX - 38, startY + 3,
-                0, 0,
-                32, 32,
-                32, 32,
-                chroma
+        confirm = new ChromaImageButton(
+                width - 40,
+                10,
+                b -> {
+                    this.config.save();
+                    this.onClose();
+                },
+                0xc6fc6f,
+                Component.literal("Confirm"),
+                Identifier.fromNamespaceAndPath(
+                        Chroma.MOD_ID,
+                        "button/confirm"
+                )
         );
 
+        cancel = new ChromaImageButton(
+                width - 75,
+                10,
+                b -> this.onClose(),
+                0xd40021,
+                Component.literal("Cancel"),
+                Identifier.fromNamespaceAndPath(
+                        Chroma.MOD_ID,
+                        "button/cancel"
+                )
+        );
 
-        Component component = drawSmartText(this.minecraft, startX - this.minecraft.font.width(Component.literal("Chroma")) / 2 + 15, startY + 15, Component.literal("Chroma"), 0xc080cc, 0xc099cc, mouseX, mouseY);
-        guiGraphics.drawString(minecraft.font, component, startX - this.minecraft.font.width(component) / 2 + 15, startY + 15, chroma, true);
-
-
-        int desc1 = withAlpha(0xFFFFFFFF, (int) (getPercentFromRange(35, 45) * 255));
-        int desc2 = withAlpha(0xFFFFFFFF, (int) (getPercentFromRange(40, 50) * 100));
-        int desc3 = withAlpha(0xFFFFFFFF, (int) (getPercentFromRange(45, 55) * 200));
-
-        Component component1 = drawSmartText(this.minecraft, startX - this.minecraft.font.width(Component.literal("Rendering at its finest.")) / 2, startY + 37, Component.literal("Rendering at its finest."), 0x808080, 0x999999, mouseX, mouseY);
-        guiGraphics.drawString(minecraft.font, component1, startX - this.minecraft.font.width(component1) / 2, startY + 37, desc1, true);
-
-        guiGraphics.fill(startX - width / 2 + 30, startY + 50, startX + width / 2 - 30, startY + 51, desc2);
-
-        Component data = drawSmartText(this.minecraft, startX - this.minecraft.font.width(Component.literal("Chroma: 1.0v | NitronRbn.")) / 2, startY + 65, Component.literal("Chroma: 1.0v | NitronRbn."), 0x808080, 0x999999, mouseX, mouseY);
-        guiGraphics.drawString(minecraft.font, data, startX - this.minecraft.font.width(data) / 2, startY + 65, desc3, true);
-
-        Component info = drawSmartText(this.minecraft, startX - this.minecraft.font.width(Component.literal("More features are planned! :3")) / 2, startY + 65, Component.literal("More features are planned! :3"), 0x404040, 0x606060, mouseX, mouseY);
-        guiGraphics.drawString(minecraft.font, info, startX - this.minecraft.font.width(info) / 2, startY + 54, desc3, true);
+        addRenderableWidget(confirm);
+        addRenderableWidget(cancel);
     }
 
-    public float getPercentFromRange(float start, float end) {
-        float range = end - start;
-        if (range == 0.0f) return 1.0f;
-        return Mth.clamp((Mth.lerp(this.minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false), this.ticksOpen - 1, this.ticksOpen) - start) / range, 0.0f, 1.0f);
+    private int getListBottom() {
+        return height - LIST_BOTTOM_PADDING;
+    }
+
+    private int getListHeight() {
+        return Math.max(0, getListBottom() - LIST_TOP);
+    }
+
+    private int getMaxScroll() {
+        return Math.max(0, contentHeight - getListHeight());
+    }
+
+    private void clampScroll() {
+        scrollOffset = Math.max(
+                0,
+                Math.min(scrollOffset, getMaxScroll())
+        );
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        int y = LIST_TOP - scrollOffset + 10;
+
+        for (ChromaButton button : buttons) {
+            button.updatePosition(
+                    guiGraphics.guiWidth() / 2 - button.getWidth() / 2,
+                    y,
+                    this.ticksOpen
+            );
+
+            boolean visible =
+                    y + button.getHeight() >= LIST_TOP
+                            && y <= getListBottom();
+
+            button.visible = visible;
+            button.active = visible;
+
+            y += button.getHeight() + BUTTON_SPACING;
+        }
+
+        confirm.updatePosition(
+                guiGraphics.guiWidth() - 40,
+                10,
+                this.ticksOpen
+        );
+
+        cancel.updatePosition(
+                guiGraphics.guiWidth() - 75,
+                10,
+                this.ticksOpen
+        );
+
+        // Render the background first.
+        //this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+
+        // Clip only the scrolling section buttons.
+        guiGraphics.enableScissor(
+                0,
+                LIST_TOP,
+                guiGraphics.guiWidth(),
+                getListBottom()
+        );
+
+        for (ChromaButton button : buttons) {
+            if (button.visible) {
+                button.render(guiGraphics, mouseX, mouseY, partialTick);
+            }
+        }
+
+        guiGraphics.disableScissor();
+
+        // Render fixed buttons outside of the scissor.
+        confirm.render(guiGraphics, mouseX, mouseY, partialTick);
+        cancel.render(guiGraphics, mouseX, mouseY, partialTick);
+    }
+
+    @Override
+    public boolean mouseScrolled(
+            double mouseX,
+            double mouseY,
+            double scrollX,
+            double scrollY
+    ) {
+        /*
+         * Only scroll when the mouse is inside the section list.
+         */
+        if (mouseY >= LIST_TOP && mouseY <= getListBottom()) {
+            scrollOffset -= (int) (scrollY * 20);
+            clampScroll();
+
+            return true;
+        }
+
+        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
     @Override
     public void tick() {
         super.tick();
-        this.ticksOpen++;
+
+        ticksOpen++;
+
+        RandomSource source = RandomSource.create();
+        int randomX = (int) (source.nextFloat() * this.width);
+        int randomY = (int) (source.nextFloat() * this.height);
+        if (source.nextBoolean()){
+            emitter.emit(randomX, randomY, 1, 0, 1);
+        }
+
+        emitter.tick();
     }
 
-    public void setTicksOpen(int ticksOpen) {
-        this.ticksOpen = ticksOpen;
+    @Override
+    public void renderBackground(
+            GuiGraphics guiGraphics,
+            int mouseX,
+            int mouseY,
+            float partialTick
+    ) {
+        emitter.render(guiGraphics);
+        super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+        /*
+         * Main background.
+         */
+        guiGraphics.fillGradient(
+                0,
+                0,
+                guiGraphics.guiWidth(),
+                guiGraphics.guiHeight(),
+                0xFF000000,
+                0x00000000
+        );
+
+        guiGraphics.fillGradient(
+                0,
+                0,
+                guiGraphics.guiWidth(),
+                guiGraphics.guiHeight(),
+                0x00000000,
+                0x80000010
+        );
+
+        /*
+         * Header separator.
+         */
+        guiGraphics.fill(
+                0,
+                50,
+                guiGraphics.guiWidth(),
+                51,
+                0x50FFFFFF
+        );
+
+        guiGraphics.fillGradient(
+                0,
+                51,
+                guiGraphics.guiWidth(),
+                guiGraphics.guiHeight() / 2,
+                0x10FFFFFF,
+                0x00FFFFFF
+        );
+
+        /*
+         * Mod icon.
+         */
+        guiGraphics.blit(
+                RenderPipelines.GUI_TEXTURED,
+                Identifier.fromNamespaceAndPath(modId, "icon.png"),
+                10,
+                10,
+                0,
+                0,
+                32,
+                32,
+                32,
+                32
+        );
+
+        /*
+         * Mod metadata.
+         */
+        Optional<ModContainer> container =
+                FabricLoader.getInstance().getModContainer(this.modId);
+
+        if (container.isPresent()) {
+            ModContainer mod = container.get();
+            ModMetadata metadata = mod.getMetadata();
+
+            String name = metadata.getName();
+            String version = metadata.getVersion().getFriendlyString();
+
+            String authors = metadata.getAuthors()
+                    .stream()
+                    .map(Person::getName)
+                    .limit(3)
+                    .collect(Collectors.joining(", "));
+
+            if (metadata.getAuthors().size() > 3) {
+                authors += ", ...";
+            }
+
+            guiGraphics.drawString(
+                    this.minecraft.font,
+                    name,
+                    45,
+                    10,
+                    0xFFFFFFFF
+            );
+
+            guiGraphics.drawString(
+                    this.minecraft.font,
+                    version,
+                    45
+                            + this.minecraft.font.width(name)
+                            + 60
+                            - this.minecraft.font.width(version),
+                    10,
+                    0x30FFFFFF
+            );
+
+            guiGraphics.fill(
+                    45,
+                    21,
+                    140,
+                    22,
+                    0x30FFFFFF
+            );
+
+            guiGraphics.drawString(
+                    this.minecraft.font,
+                    "Authors:",
+                    45,
+                    24,
+                    0x30FFFFFF
+            );
+
+            guiGraphics.drawString(
+                    this.minecraft.font,
+                    authors,
+                    45,
+                    35,
+                    0x60FFFFFF
+            );
+        }
     }
 
     @Override

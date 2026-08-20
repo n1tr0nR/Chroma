@@ -3,7 +3,6 @@ package dev.rbn.chroma.client.shader;
 import com.mojang.blaze3d.resource.CrossFrameResourcePool;
 import dev.rbn.chroma.client.shader.event.PostEffectEvent;
 import dev.rbn.chroma.client.shader.uniform.PostEffectHandle;
-import dev.rbn.chroma.config.ChromaConfig;
 import dev.rbn.chroma.mixin.accessors.GameRendererAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -39,9 +38,9 @@ public class ChromaPostManager {
     }
 
     public void applyShaders() {
-        if (!ChromaConfig.SHADERS.ENABLED.get()){
-            return;
-        }
+        //if (!ChromaConfig.SHADERS.ENABLED.get()){
+        //    return;
+        //}
 
         checkPool();
 

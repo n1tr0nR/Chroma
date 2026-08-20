@@ -1,7 +1,6 @@
 package dev.rbn.chroma.client.particle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.rbn.chroma.config.ChromaConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -29,7 +28,7 @@ public class ChromaParticleRenderer {
 
             Vec3 particlePosition = particle.getPosition();
             double distance = particlePosition.distanceTo(camera.position());
-            if (distance > ChromaConfig.EFFECTS.MAX_DISTANCE.get()) continue;
+            //if (distance > ChromaConfig.EFFECTS.MAX_DISTANCE.get()) continue;
 
             submit.order(i).submitCustomGeometry(
                     stack,

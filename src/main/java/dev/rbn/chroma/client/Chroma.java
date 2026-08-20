@@ -3,29 +3,22 @@ package dev.rbn.chroma.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.rbn.chroma.client.lens_flare.*;
 import dev.rbn.chroma.client.particle.ChromaParticleRenderer;
-import dev.rbn.chroma.client.screen_particle.ScreenParticleManager;
-import dev.rbn.chroma.client.screenshake.Screenshake;
+import dev.rbn.chroma.submods.flare.screenshake.Screenshake;
 import dev.rbn.chroma.client.shader.ChromaPostManager;
-import dev.rbn.chroma.config.ChromaConfig;
-import dev.rbn.chroma.config.ConfigManager;
+import dev.rbn.chroma.config.ConfigEvent;
 import dev.rbn.chroma.submods.Submod;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
-import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 public class Chroma implements ClientModInitializer {
     public ChromaParticleRenderer renderer;
-    public static ScreenParticleManager particle;
 
     public static final String MOD_ID = "chroma";
     public static final Logger LOGGER = LoggerFactory.getLogger("Chroma");
@@ -36,33 +29,26 @@ public class Chroma implements ClientModInitializer {
                 .getEntrypoints("chroma-submod", Submod.class)
                 .forEach(Submod::onInitialize);
 
-        particle = new ScreenParticleManager();
+        ConfigEvent.REGISTER.addConfig(instance ->
+                instance.registerNewConfig(MOD_ID, new ChromaConfig())
+        );
 
-        ConfigManager.load(ChromaConfig.getSections());
+
         ChromaPostManager post = new ChromaPostManager();
         post.initialize();
-        Screenshake screenshake = new Screenshake();
-        screenshake.initialize();
-        ClientTickEvents.END_CLIENT_TICK.register(screenshake::tick);
 
-        WorldRenderEvents.BEFORE_TRANSLUCENT.register(context -> {
-            LFHelper.WorldRenderState.VIEW = RenderSystem.getModelViewMatrix();
-            LFHelper.WorldRenderState.PROJECTION = Minecraft.getInstance().gameRenderer.getProjectionMatrix(0);
-        });
-
+        //Registries
         ChromaParticles.register();
         ChromaPipelines.register();
         ChromaRenderTypes.register();
 
-        HudElementRegistryImpl.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "lens_flare"), new LensFlareHudRenderer());
-
+        //Events
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (client.level != null){
                 client.level.chroma$clear();
             }
             renderer = null;
         });
-
         WorldRenderEvents.END_MAIN.register(worldRenderContext -> {
             Minecraft minecraft = Minecraft.getInstance();
             Vec3 cameraPosition = minecraft.gameRenderer.getMainCamera().position();
@@ -81,6 +67,10 @@ public class Chroma implements ClientModInitializer {
             }
 
             worldRenderContext.matrices().popPose();
+        });
+        WorldRenderEvents.BEFORE_TRANSLUCENT.register(context -> {
+            LFHelper.WorldRenderState.VIEW = RenderSystem.getModelViewMatrix();
+            LFHelper.WorldRenderState.PROJECTION = Minecraft.getInstance().gameRenderer.getProjectionMatrix(0);
         });
     }
 

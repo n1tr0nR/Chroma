@@ -1,4 +1,4 @@
-package dev.rbn.chroma.client.screenshake;
+package dev.rbn.chroma.submods.flare.screenshake;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

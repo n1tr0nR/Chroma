@@ -11,6 +11,5 @@ import org.jspecify.annotations.NonNull;
 public class ScreenParticleRenderer implements HudElement {
     @Override
     public void render(@NonNull GuiGraphics guiGraphics, @NonNull DeltaTracker deltaTracker) {
-        Chroma.particle.render(guiGraphics);
     }
 }
